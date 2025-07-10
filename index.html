@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MUN Position Paper Builder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #f3e5f5, #e8eaf6);
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 120px;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 1em;
+      border: 2px solid #7e57c2;
+      border-radius: 8px;
+      background: #fff;
+    }
+    button {
+      background-color: #673ab7;
+      color: white;
+      padding: 10px 20px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #512da8;
+    }
+    .help-box {
+      background: #ede7f6;
+      padding: 15px;
+      border-left: 5px solid #673ab7;
+      margin-top: 20px;
+      border-radius: 6px;
+    }
+    .phrase-bank li {
+      list-style: none;
+      padding: 5px;
+      cursor: pointer;
+      color: #5e35b1;
+    }
+    .phrase-bank li:hover {
+      text-decoration: underline;
+    }
+    .phrase-bank {
+      display: flex;
+      flex-wrap: wrap;
+      background: #f3e5f5;
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+    .phrase-bank li {
+      width: 50%;
+    }
+    .autosaved-label {
+      font-size: 0.85em;
+      color: #388e3c;
+      margin-top: 4px;
+    }
+    .icon {
+      margin-right: 8px;
+    }
+    .section-wrapper {
+      border: 1px solid #d1c4e9;
+      border-radius: 10px;
+      padding: 15px;
+      background: #fafafa;
+      margin-bottom: 20px;
+    }
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 style="text-align: center; font-size: 1.32em; font-style: italic; font-weight: bold; margin-bottom: 20px;">Created by Panagiotis Domvros 2025 (CC BY-NC)</h2>
+    <div style="display: flex; align-items: center; gap: 12px; justify-content: center;">
+      <img src="PyleaMUN_finalstamp.png" alt="PyleaMUN Logo" style="height: 60px;">
+      <h1 style="margin: 0;">MUN Position Paper Builder</h1>
+    </div>
+    <p>This tool guides delegates in building structured, persuasive, and formal position papers.</p>
+
+    <div id="sections"></div>
+    <div id="output" style="white-space: pre-wrap; margin-top: 20px; background: #fff; border: 1px solid #ccc; padding: 15px; border-radius: 8px;"></div>
+    
+    <div class="button-group">
+      <button id="previewBtn">Preview Position Paper</button>
+      <button id="copyBtn">Copy to Clipboard</button>
+    </div>
+  </div>
+
+  <script>
+    const sections = [
+      {
+        id: "intro",
+        title: "Introduction",
+        description: "Briefly introduce the issue on the committee's agenda and why it is significant globally.",
+        phrases: [
+          "The issue at hand poses a direct challenge to international cooperation.",
+          "The global relevance of this topic cannot be understated.",
+          "As global citizens, we are compelled to address this issue.",
+          "This matter affects both developed and developing nations alike.",
+          "It is imperative to examine this issue through a multilateral lens.",
+          "The urgency surrounding this matter has escalated in recent years.",
+          "[Country] acknowledges the profound impact of this problem.",
+          "Our delegation welcomes the committee's attention to this challenge.",
+          "Addressing this topic is vital for ensuring sustainable development.",
+          "The committee is uniquely positioned to propose meaningful reforms."
+        ]
+      },
+      {
+        id: "nationalPolicy",
+        title: "National Policy",
+        description: "Describe your country's general position on the issue.",
+        phrases: [
+          "[Country] has consistently prioritized this matter on the global stage.",
+          "Our nation upholds the principles enshrined in international law.",
+          "We support pragmatic and inclusive approaches to this issue.",
+          "Our national policies align with UN mandates on this subject.",
+          "[Country] adopts a rights-based stance on this issue.",
+          "The delegation of [Country] firmly believes in sustainable solutions.",
+          "[Country] has enacted domestic reforms in support of this issue.",
+          "Our legal framework ensures compliance with international norms.",
+          "We maintain a policy of cooperation and transparency.",
+          "[Country] actively collaborates with regional partners on this issue."
+        ]
+      },
+      {
+        id: "pastAction",
+        title: "Past International Action",
+        description: "Mention relevant UN actions, treaties, or resolutions your country supports.",
+        phrases: [
+          "We commend the UN for its commitment through Resolution [#].",
+          "[Country] ratified the Convention on ... in [year].",
+          "Our delegation actively supported the establishment of ...",
+          "We contributed resources to implement the Global Compact on ...",
+          "Our nation has participated in joint task forces under UN guidance.",
+          "We recognize the role of UN agencies in addressing this matter.",
+          "Our support for multilateral agreements remains unwavering.",
+          "[Country] helped shape the outcome document of ...",
+          "We engaged in consultations on best practices through the UN.",
+          "Our delegation previously proposed a draft resolution on ..."
+        ]
+      },
+      {
+        id: "proposedSolutions",
+        title: "Proposed Solutions",
+        description: "Offer specific, actionable, and realistic proposals.",
+        phrases: [
+          "We propose a UN-led coalition to address the matter regionally.",
+          "Our delegation suggests an international funding mechanism.",
+          "We support the creation of a global database to track ...",
+          "[Country] recommends a multi-stakeholder dialogue on ...",
+          "We advocate for training programs facilitated by UN agencies.",
+          "Our proposal includes greater monitoring and evaluation.",
+          "We urge capacity-building for states most affected.",
+          "[Country] supports enhanced cooperation between NGOs and governments.",
+          "We recommend standardized reporting frameworks for compliance.",
+          "Our country supports pilot programs in vulnerable areas."
+        ]
+      },
+      {
+        id: "conclusion",
+        title: "Conclusion",
+        description: "Reiterate the importance of collaboration and reiterate your stance.",
+        phrases: [
+          "In closing, [Country] urges consensus and unity in this matter.",
+          "Together, we can overcome challenges through cooperation.",
+          "Let us move forward with resolve and responsibility.",
+          "We reaffirm our commitment to sustainable peace and development.",
+          "Our delegation looks forward to constructive dialogue.",
+          "Only by acting together can we create lasting change.",
+          "[Country] remains dedicated to upholding international law.",
+          "This committee has the potential to enact tangible reforms.",
+          "Let us not miss the opportunity to advance this agenda.",
+          "Thank you for the opportunity to contribute to this debate."
+        ]
+      }
+    ];
+
+    function insertPhrase(id, phrase) {
+      const textarea = document.getElementById(id);
+      if (textarea) {
+        textarea.value += (textarea.value.trim() ? ' ' : '') + phrase;
+        textarea.focus();
+      }
+    }
+
+    function generateOutput() {
+      const outputDiv = document.getElementById("output");
+      const outputText = sections.map(sec => document.getElementById(sec.id).value.trim()).join('\n\n');
+      outputDiv.textContent = outputText;
+    }
+
+    function copyToClipboard() {
+      const output = document.getElementById("output");
+      if (!output.textContent.trim()) {
+        alert("Please generate a preview first!");
+        return;
+      }
+      
+      navigator.clipboard.writeText(output.textContent).then(() => {
+        alert("Position paper copied to clipboard!");
+      }).catch(err => {
+        alert("Failed to copy text: " + err);
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const container = document.getElementById("sections");
+      const savedData = JSON.parse(localStorage.getItem("munSections") || '{}');
+      
+      sections.forEach(sec => {
+        const sectionDiv = document.createElement("div");
+        sectionDiv.className = 'section-wrapper';
+        const savedText = savedData[sec.id] || '';
+        sectionDiv.innerHTML = `
+          <h2>${sec.title}</h2>
+          <div class='help-box'>${sec.description}</div>
+          <div class='phrase-bank'>${sec.phrases.map(p => `<li onclick="insertPhrase('${sec.id}', \`${p}\`)">${p}</li>`).join('')}</div>
+          <textarea id='${sec.id}' placeholder='Write your paragraph here...'>${savedText}</textarea>
+          <div class='autosaved-label'>Autosaved ✓</div>
+        `;
+        container.appendChild(sectionDiv);
+      });
+
+      document.getElementById("previewBtn").addEventListener("click", generateOutput);
+      document.getElementById("copyBtn").addEventListener("click", copyToClipboard);
+
+      sections.forEach(sec => {
+        const textarea = document.getElementById(sec.id);
+        textarea.addEventListener("input", () => {
+          const currentData = JSON.parse(localStorage.getItem("munSections") || '{}');
+          currentData[sec.id] = textarea.value;
+          localStorage.setItem("munSections", JSON.stringify(currentData));
+        });
+      });
+    });
+  </script>
+</body>
+</html>
